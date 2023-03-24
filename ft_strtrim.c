@@ -1,69 +1,83 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rocimart <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/16 19:43:31 by rocimart          #+#    #+#             */
+/*   Updated: 2023/03/24 16:57:33 by rocimart         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-char    *front_trim(const char *s1, char c)
+char	*front_trim(const char *s1, const char *set)
 {
-	int i;
+	int	i;
+	int	j;
 
 	i = 0;
-	while(s1[i] != '\0')
+	while (s1[i])
 	{
-		if(s1[i] != c)
+		j = 0;
+		while (s1[i] != set[j])
 		{
-			return ((char *)&s1[i]);
-		}   
-	i++;
+			j++;
+			if (set[j] == '\0')
+				return ((char *)&s1[i]);
+		}
+		i++;
 	}
-	return(NULL);
+	return ((char *)&s1[i]);
 }
 
-int		back_trim(char *src, char c, int size)
-{	
-	int		n;
+int	back_trim(char *src, const char *set, int size)
+{
+	int	n;
+	int	j;
 
 	n = 0;
-	while(src[size - 1])
-	{      
-		if(src[size - 1] != c)
-			return(n);
-	size--;
-	n++;
+	if (size == 0)
+		return (0);
+	while (src[size - 1])
+	{
+		j = 0;
+		while (src[size - 1] != set[j])
+		{
+			j++;
+			if (set[j] == '\0')
+				return (n);
+		}
+		size--;
+		n++;
 	}
-	return (0);
+	return (n);
 }
 
-char    *ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*src;
 	char	*m;
-	char	c;
-	int		i;
 	int		len;
-	int 	size;
+	int		size;
 
-	i = 0;
-	while(set[i] != 0)
-	{
-		c = (char)set[i];
-		src = front_trim(s1, c);
-		size = strlen(src);
-		printf("size0:%d\n", size);
-		len = back_trim(src, c, size);
-		
-		printf("size2:%d\t\t\t", len);
-		//printf("n:%d\n", n);
-	i++;
-	}
-	m = malloc(sizeof(char) * (size - len));
+	if (set == NULL || s1 == NULL || *set == '\0')
+		return (ft_strdup(s1));
+		src = front_trim(s1, set);
+			size = strlen(src);
+		len = back_trim(src, set, size);
+	m = malloc(sizeof(char) * (size - len + 1));
 	if (m == NULL)
 		return (NULL);
-	strncpy(m, src, (size - len));
-	m[size - len] = '\0';
-
-return (m);
+	ft_strlcpy(m, src, (size - len + 1));
+	return (m);
 }
 
-int main (void)
+/*int main (void)
 {
-	char const set[] = "- ";
-	printf("|%s\n", ft_strtrim(" -aba ", set));
-}
+	char const set[] = " ";
+	char const s1[] = "         ";
+	printf("|%s\n", ft_strtrim(s1, set));
+	printf("%lu\n", strlen(ft_strtrim(s1, set)));
+}*/
