@@ -6,7 +6,7 @@
 /*   By: rocimart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 03:44:28 by rocimart          #+#    #+#             */
-/*   Updated: 2023/03/28 18:13:46 by rocimart         ###   ########.fr       */
+/*   Updated: 2023/03/30 20:31:08 by rocimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**ft_split(char const *s, char c)
 	m = malloc(sizeof(char *) * (count_words(s, c) + 1));
 	if (m == NULL)
 		return (NULL);
-	while (s[i] == c)
+	while (s[i] == c && s[i] != '\0')
 		i++;
 	while (x < count_words(s, c))
 	{
@@ -71,11 +71,9 @@ char	**ft_split(char const *s, char c)
 			m[x] = ft_substr(s, (unsigned int)(i - n - j), n);
 			if (m[x] == NULL)
 			{
-				while (x >= 0)
-				{
+				while (x--)
 					free(m[x]);
-					x--;
-				}
+				free(m);				
 				return (NULL);
 			}
 			n = 0;
@@ -97,7 +95,7 @@ char	**ft_split(char const *s, char c)
 //	char	c = '-';
 
 //	i = 0;
-//	m = ft_split(s, c);
+//	m = ft_split(, c);
 	printf("______________________\n");
 //	while (i <= count_words(s, c))
 //	{
@@ -105,14 +103,13 @@ char	**ft_split(char const *s, char c)
 //		i++;
 //	}
 //
-	//char *str = "\0aa\0bbb";
+//	char *str = "\0aa\0bbb";
 
 	i = 0;
-	//printf("ha");
-	m = ft_split("hello!", ' ');
+	m = ft_split("", '\0');
 
 	printf("______________________\n");
-	printf("%d\n", count_words("hello!", ' '));
+	printf("%zu\n", count_words("hello!", ' '));
 	while (m[i])
 	{
 		printf("%s\n", m[i]);
