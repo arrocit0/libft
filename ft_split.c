@@ -6,7 +6,7 @@
 /*   By: rocimart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 03:44:28 by rocimart          #+#    #+#             */
-/*   Updated: 2023/03/30 20:31:08 by rocimart         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:11:21 by rocimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,42 +40,36 @@ size_t	count_words(char const *s, char c)
 	return (x);
 }
 
-char	**ft_split(char const *s, char c)
+void	free_seg(char **m, size_t x)
 {
-	size_t	i;
+	if (m[x] == NULL)
+	{
+		while (x--)
+			free(m[x]);
+		free(m);
+		m = NULL;
+	}
+}
+
+char	**conversion(char **m, size_t i, char const *s, char c)
+{
+	size_t	j;
 	size_t	x;
 	size_t	n;
-	size_t	j;
-	char	**m;
 
-	i = 0;
-	n = 0;
 	j = 0;
 	x = 0;
-	if (!s)
-		return (NULL);
-	m = malloc(sizeof(char *) * (count_words(s, c) + 1));
-	if (m == NULL)
-		return (NULL);
-	while (s[i] == c && s[i] != '\0')
-		i++;
+	n = 0;
 	while (x < count_words(s, c))
 	{
 		if (s[i] == c || s[i] == '\0')
 		{
-			while (s[i] == c && s[i] != '\0')
-			{
+			while (s[i + j] == c && s[i + j] != '\0')
 				j++;
-				i++;
-			}
-			m[x] = ft_substr(s, (unsigned int)(i - n - j), n);
-			if (m[x] == NULL)
-			{
-				while (x--)
-					free(m[x]);
-				free(m);				
-				return (NULL);
-			}
+			m[x] = ft_substr(s, (unsigned int)(i - n), n);
+			if (!m[x])
+				return (free_seg(m, x), NULL);
+			i += j;
 			n = 0;
 			j = 0;
 			x++;
@@ -83,7 +77,30 @@ char	**ft_split(char const *s, char c)
 		n++;
 		i++;
 	}
-	m[x] = NULL;
+	return (m);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	size_t	i;
+	size_t	x;
+	size_t	n;
+	char	**m;
+
+	i = 0;
+	n = 0;
+	x = 0;
+	if (!s)
+		return (NULL);
+	m = malloc(sizeof(char *) * (count_words(s, c) + 1));
+	if (m == NULL)
+		return (NULL);
+	m[count_words(s, c)] = NULL;
+	while (s[i] == c && s[i] != '\0')
+		i++;
+	m = conversion(m, i, s, c);
+	if (!m)
+		return (NULL);
 	return (m);
 }
 

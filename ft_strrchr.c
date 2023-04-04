@@ -6,7 +6,7 @@
 /*   By: rocimart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 21:59:09 by rocimart          #+#    #+#             */
-/*   Updated: 2023/03/23 21:09:23 by rocimart         ###   ########.fr       */
+/*   Updated: 2023/04/04 03:56:12 by rocimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 char	*ft_strrchr(const char *str, int c)
 {
-	int		len;
+	size_t	len;
 	char	*s;
 
 	s = (char *)str;
-	len = strlen(s);
-	if (c == '\0')
+	len = ft_strlen(s);
+	if ((char)c == '\0')
 		return (&s[len]);
 	while (len != 0)
 	{
-		if (s[len] == c)
-			return (&s[len]);
+		//printf("|%c\n", s[len]);
+		if (s[len - 1] == (char) c)
+			return (&s[len - 1]);
 		len--;
-		if (s[0] == c)
+		if (s[0] == (char)c)
 			return (s);
 	}
 	return (0);
@@ -34,10 +35,11 @@ char	*ft_strrchr(const char *str, int c)
 
 /*int	main(void)
 {
-	const char str[] = "consentrao";
+	const char str[] = "tripouille";
 
-	int c = 'o';
+	int c = 't' + 256;
 
+	//printf("%p\n", str);
 	printf("%s\n", ft_strrchr(str, c));
 	printf("%s\n", strrchr(str, c));
 }*/

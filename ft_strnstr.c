@@ -6,7 +6,7 @@
 /*   By: rocimart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 01:01:28 by rocimart          #+#    #+#             */
-/*   Updated: 2023/03/15 12:56:58 by rocimart         ###   ########.fr       */
+/*   Updated: 2023/04/04 03:25:42 by rocimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	n = (char *)needle;
 	i = 0;
 	u = 0;
+	if (len > ft_strlen(h))
+		len = ft_strlen(h);
 	if (n[u] == 0)
 		return (h);
-	while (i < len)
+	while (i < len && h[i])
 	{
 		while (h[i] == n[u] && i < len)
 		{
@@ -36,21 +38,24 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 			u++;
 			if (n[u] == 0)
 				return (&h[i - u]);
-			if (n[u] != h[i])
-				return (0);
 		}
+		i -= u;
+		u = 0;
 		i++;
 	}
-	return (0);
+	return (NULL);
 }
-
-/*int	main(void)
+/*
+int	main(void)
 {
 	const char	s[] = "lorem ipsum dolor sit amet";
-	const char	o[] = "dolor";
+	const char	o[] = "ipsumm";
+	char haystack[30] = "aaabcabcd";
+	char needle[10] = "aabc";
 
-
-	printf("%s\n", strnstr(s, o, -1));
-	printf("%s\n", ft_strnstr(s, o, -1));
+	printf("%s\n", strnstr(s, o, 30));
+	printf("%s\n", ft_strnstr(s, o, 30));
+	printf("%s\n", ft_strnstr(haystack, needle, -1));
+	printf("%s\n", strnstr(haystack, needle, -1));
 
 }*/
